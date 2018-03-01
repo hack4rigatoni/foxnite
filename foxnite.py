@@ -5,10 +5,21 @@
 # input <password> from
 # system.arguments
 import sys
-if not len(sys.argv) == 2:
-    print "catnite.py <password>"
+if not len(sys.argv) in [2,3]:
+    print "%s <password>" % sys.argv[0]
     sys.exit(1)
 
+if len(sys.argv) == 3:
+    if sys.argv[1] == 'x':
+       password = sys.argv[2]
+       determined = True
+    else:
+       print "%s <password>" % sys.argv[0]
+       sys.exit(1)
+
+if len(sys.argv) == 2:
+    password = sys.argv[1]
+    determined = False
 
 #____________________________________
 # CHARACTER SUBSTITUTION OPTIONS
@@ -33,11 +44,12 @@ options['i'].append('!')
 options['o'].append('0')
 options['s'].append('$')
 
+
 #----------------------
 # || -> |p|a|s|s|w|..|d
 
 head = ""
-tail = sys.argv[1]
+tail = password
 
 # head  options   tail
 #-----------------------------------
@@ -66,6 +78,12 @@ def permutation(head,tail):
        permutation(head+opt,tail[1:])
 #------------------------------------
 #
+
+
+# before we go..
+if not determined:
+    from prudent_fox import warning
+    warning(tail,options)
 
 # do it!
 permutation(head,tail)
